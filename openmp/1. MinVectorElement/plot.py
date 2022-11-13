@@ -15,11 +15,11 @@ def read_coords_from_file(filepath: str) -> Tuple[int, float]:
 
 
 def plot_test_result() -> None:
-    x_6, y_6 = read_coords_from_file('test_with_6_threads.txt')
+    x_5, y_5 = read_coords_from_file('test_with_5_threads.txt')
     x_10, y_10 = read_coords_from_file('test_with_10_threads.txt')
     x_15, y_15 = read_coords_from_file('test_with_15_threads.txt')
 
-    plt.plot(x_6, y_6, label="6 threads")
+    plt.plot(x_5, y_5, label="5 threads")
     plt.plot(x_10, y_10, label="10 threads")
     plt.plot(x_15, y_15, label="15 theads")
     plt.legend()
