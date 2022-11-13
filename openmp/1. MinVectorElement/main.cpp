@@ -16,6 +16,16 @@ using namespace std;
 #define MIN_ARRAY_SIZE 5000  // минимальный размер генерируемого вектора
 #define ITER_STEP 5000       // шаг изменения размера массива
 
+struct TestResult{
+    int generatedArraySize;
+    double searchExecutionTime;
+};
+
+
+struct ThreadsNumTest {
+  TestResult* results;
+  int size;
+};
 
 int* generateVector(int size) {
     int* s = new int[size];
@@ -38,30 +48,35 @@ int findMin(int* vec, int n, int threads_num) {
 }
 
 
-pair<int, double>* test(int threads_num) {
-    int vec_size = MIN_ARRAY_SIZE;
-
+ThreadsNumTest test(int threads_num) {
+    int cur_vec_size = MIN_ARRAY_SIZE;
     int iter_count = (MAX_ARRAY_SIZE - MIN_ARRAY_SIZE) / ITER_STEP;            // количество итераций/изменений размера массива
-    pair<int, double>* results = new pair<int, double>[iter_count];            // результаты в виде <размер массива, время работы>
+    TestResult* results = new TestResult[iter_count];                          // результаты в виде <размер массива, время работы>
     for (int i = 0; i < iter_count; i++) {
-        // генерируем массив
-        int cur_vec_size = vec_size + i * ITER_STEP;
         int* vec = generateVector(cur_vec_size);
 
         double start = omp_get_wtime();
-        findMin(vec, vec_size, threads_num);
+        findMin(vec, cur_vec_size, threads_num);
         double end = omp_get_wtime();
 
-        results[i].first = cur_vec_size;
-        results[i].second = end - start;
+        delete[] vec;
+
+        results[i].generatedArraySize = cur_vec_size;
+        results[i].searchExecutionTime = end - start;
+        cur_vec_size = cur_vec_size + ITER_STEP;
     }
-    return results;
+
+    struct ThreadsNumTest res;
+    res.results = results;
+    res.size = iter_count;
+
+    return res;
 }
 
 
 int main(int argc, char *argv[]) {
-    pair<int, double>* results = test(MAX_THREADS);
-    for (int i = 0; i <= sizeof(results); i++) {
-        cout << results[i].first << ", " << results[i].second << endl;
+    ThreadsNumTest result = test(MAX_THREADS);
+    for (int i = 0; i < result.size; i++) {
+        cout << result.results[i].generatedArraySize << ", " << result.results[i].searchExecutionTime << endl;
     }
 }
