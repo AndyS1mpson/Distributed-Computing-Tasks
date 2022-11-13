@@ -11,12 +11,12 @@
 using namespace std;
 
 #define MAX_RAND_VAL 100000   // верхняя граница значений вектора
-#define MAX_THREADS 15       // больше числа ядер
-#define MIN_THREADS 5        // меньше числа ядер
-#define CORES_NUM 10         // равно числу ядер (Apple M1 Pro)
+#define MAX_THREADS 15        // больше числа ядер
+#define MIN_THREADS 5         // меньше числа ядер
+#define CORES_NUM 10          // равно числу ядер (Apple M1 Pro)
 #define MAX_ARRAY_SIZE 200000 // максимальный размер генерируемого вектора
-#define MIN_ARRAY_SIZE 100000  // минимальный размер генерируемого вектора
-#define ITER_STEP 20000       // шаг изменения размера массива
+#define MIN_ARRAY_SIZE 100000 // минимальный размер генерируемого вектора
+#define ITER_STEP 20000       // шаг изменения размера вектора
 
 
 // Структура описывающая тест поиска минимального элемента
