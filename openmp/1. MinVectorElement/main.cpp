@@ -6,6 +6,7 @@
 #include <omp.h>
 #include <vector>
 #include <stdio.h>
+#include <fstream>
 using namespace std;
 
 #define MAX_RAND_VAL 1000    // верхняя граница значений вектора
@@ -26,6 +27,16 @@ struct ThreadsNumTest {
   TestResult* results;
   int size;
 };
+
+void saveResultsToFile(ThreadsNumTest results, string filename) {
+    ofstream file;
+    file.open(filename);
+    for (int i = 0; i < results.size; i++) {
+      file << results.results[i].generatedArraySize << ", " << results.results[i].searchExecutionTime * 1000 << endl;
+    }
+    file.close();
+}
+
 
 int* generateVector(int size) {
     int* s = new int[size];
@@ -75,8 +86,6 @@ ThreadsNumTest test(int threads_num) {
 
 
 int main(int argc, char *argv[]) {
-    ThreadsNumTest result = test(MAX_THREADS);
-    for (int i = 0; i < result.size; i++) {
-        cout << result.results[i].generatedArraySize << ", " << result.results[i].searchExecutionTime << endl;
-    }
+    ThreadsNumTest results = test(MAX_THREADS);
+    saveResultsToFile(results, "32_threads_test.txt");
 }
