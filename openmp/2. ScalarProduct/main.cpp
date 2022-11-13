@@ -1,6 +1,6 @@
 /*
 Задача:
-Найти максимальный(минимальный) элемент массива.
+Найти скалярное произведение векторов.
 */
 #include <iostream>
 #include <omp.h>
@@ -25,6 +25,7 @@ vector<int> generateVector(int size) {
     return vec;
 }
 
+
 int dotProduct(vector<int> a, vector<int> b) {
     if (a.size() != b.size()) {
         throw invalid_argument("vectors must have the same size");
@@ -35,6 +36,11 @@ int dotProduct(vector<int> a, vector<int> b) {
         result += a[i] * b[i];
     };
     return result;
+}
+
+
+void test(int threadsNum) {
+
 }
 
 
