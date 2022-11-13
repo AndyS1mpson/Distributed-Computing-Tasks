@@ -24,12 +24,12 @@ using namespace std;
 struct TestResult {
 
     TestResult(int size, double execTime) {
-        generatedArraySize = size;
-        searchExecutionTime = execTime;    
+        generatedVectorSize = size;
+        executionTime = execTime;    
     };
 
-    int generatedArraySize;
-    double searchExecutionTime;
+    int generatedVectorSize;
+    double executionTime;
 };
 
 
@@ -37,7 +37,7 @@ void saveTestResultsToFile(list<TestResult> testRestults, string filename) {
     ofstream file;
     file.open(filename);
     for (TestResult res : testRestults) {
-      file << res.generatedArraySize << " " << res.searchExecutionTime<< endl;
+      file << res.generatedVectorSize << " " << res.executionTime<< endl;
     }
     file.close();
 }
