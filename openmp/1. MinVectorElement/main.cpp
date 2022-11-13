@@ -32,7 +32,7 @@ void saveTestResultsToFile(ThreadsNumTest results, string filename) {
     ofstream file;
     file.open(filename);
     for (int i = 0; i < results.size; i++) {
-      file << results.results[i].generatedArraySize << ", " << results.results[i].searchExecutionTime * 1000 << endl;
+      file << results.results[i].generatedArraySize << " " << results.results[i].searchExecutionTime * 1000 << endl;
     }
     file.close();
 }
@@ -88,6 +88,7 @@ ThreadsNumTest test(int threads_num) {
 int main(int argc, char *argv[]) {
     ThreadsNumTest results_1 = test(MAX_THREADS);
     saveTestResultsToFile(results_1, "test_with_15_threads.txt");
+
 
     ThreadsNumTest results_2 = test(MIN_THREADS);
     saveTestResultsToFile(results_2, "test_with_6_threads.txt");
