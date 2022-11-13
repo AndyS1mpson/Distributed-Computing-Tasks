@@ -1,6 +1,7 @@
-import matplotlib.pyplot as plt
+"""Plot OpenMP test results for different threads num."""
 from typing import Tuple
 
+import matplotlib.pyplot as plt
 
 
 def read_coords_from_file(filepath: str) -> Tuple[int, float]:
@@ -12,6 +13,7 @@ def read_coords_from_file(filepath: str) -> Tuple[int, float]:
         Y.append(float(values[1]))
     return X, Y
 
+
 def plot_test_result() -> None:
     x_6, y_6 = read_coords_from_file('test_with_6_threads.txt')
     x_10, y_10 = read_coords_from_file('test_with_10_threads.txt')
@@ -22,6 +24,7 @@ def plot_test_result() -> None:
     plt.plot(x_15, y_15, label="15 theads")
     plt.legend()
     plt.savefig('plt.png')
+
 
 if __name__ == '__main__':
     plot_test_result()
