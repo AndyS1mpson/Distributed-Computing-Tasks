@@ -1,3 +1,7 @@
+/*
+Задача:
+Найти максимальный(минимальный) элемент массива.
+*/
 #include <iostream>
 #include <omp.h>
 #include <vector>
