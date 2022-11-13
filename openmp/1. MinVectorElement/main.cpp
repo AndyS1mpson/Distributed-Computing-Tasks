@@ -9,10 +9,10 @@
 #include <fstream>
 using namespace std;
 
-#define MAX_RAND_VAL 1000    // верхняя граница значений вектора
-#define MAX_THREADS 32       // больше числа ядер
-#define MIN_THREADS 5        // меньше числа ядер
-#define CORES_NUM 8          // равно числу ядер
+#define MAX_RAND_VAL 1000000 // верхняя граница значений вектора
+#define MAX_THREADS 15       // больше числа ядер
+#define MIN_THREADS 6        // меньше числа ядер
+#define CORES_NUM 10         // равно числу ядер (Apple M1 Pro)
 #define MAX_ARRAY_SIZE 50000 // максимальный размер генерируемого вектора
 #define MIN_ARRAY_SIZE 5000  // минимальный размер генерируемого вектора
 #define ITER_STEP 5000       // шаг изменения размера массива
@@ -28,7 +28,7 @@ struct ThreadsNumTest {
   int size;
 };
 
-void saveResultsToFile(ThreadsNumTest results, string filename) {
+void saveTestResultsToFile(ThreadsNumTest results, string filename) {
     ofstream file;
     file.open(filename);
     for (int i = 0; i < results.size; i++) {
@@ -86,6 +86,12 @@ ThreadsNumTest test(int threads_num) {
 
 
 int main(int argc, char *argv[]) {
-    ThreadsNumTest results = test(MAX_THREADS);
-    saveResultsToFile(results, "32_threads_test.txt");
+    ThreadsNumTest results_1 = test(MAX_THREADS);
+    saveTestResultsToFile(results_1, "test_with_15_threads.txt");
+
+    ThreadsNumTest results_2 = test(MIN_THREADS);
+    saveTestResultsToFile(results_2, "test_with_6_threads.txt");
+  
+    ThreadsNumTest results_3 = test(CORES_NUM);
+    saveTestResultsToFile(results_3, "test_with_10_threads.txt");
 }
