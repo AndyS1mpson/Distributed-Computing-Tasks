@@ -45,11 +45,9 @@ void saveTestResultsToFile(list<TestResult> testRestults, string filename) {
 
 vector<int> generateVector(int size) {
     vector<int> vec;
-    // int* s = new int[size];
     srand(time(NULL));
     for (int i=0; i<size; i++) {
       vec.push_back(rand() % MAX_RAND_VAL + 1);
-      //s[i] = rand() % MAX_RAND_VAL + 1;
     };
     return vec;
 }
