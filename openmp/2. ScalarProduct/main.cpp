@@ -84,12 +84,12 @@ list<TestResult> test(int threadsNum) {
 
 
 int main(int argc, char *argv[]) {
-    list<TestResult> results_1 = test(MAX_THREADS);
-    saveTestResultsToFile(results_1, "test_with_15_threads.txt");
+    list<TestResult> res1 = test(MAX_THREADS);
+    saveTestResultsToFile(res1, "test_with_15_threads.txt");
 
-    list<TestResult> results_2 = test(MIN_THREADS);
-    saveTestResultsToFile(results_2, "test_with_5_threads.txt");
+    list<TestResult> res2 = test(MIN_THREADS);
+    saveTestResultsToFile(res2, "test_with_5_threads.txt");
   
-    list<TestResult> results_3 = test(CORES_NUM);
-    saveTestResultsToFile(results_3, "test_with_10_threads.txt");
+    list<TestResult> res3 = test(CORES_NUM);
+    saveTestResultsToFile(res3, "test_with_10_threads.txt");
 }

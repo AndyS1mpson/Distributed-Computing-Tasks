@@ -5,20 +5,38 @@
 #include <iostream>
 #include <omp.h>
 #include <math.h>
+#include <list>
+#include <fstream>
 using namespace std;
 
-#define MAX_RAND_VAL 100000   // верхняя граница значений вектора
 #define MAX_THREADS 15        // больше числа ядер
 #define MIN_THREADS 5         // меньше числа ядер
 #define CORES_NUM 10          // равно числу ядер (Apple M1 Pro)
-#define MAX_ARRAY_SIZE 200000 // максимальный размер генерируемого вектора
-#define MIN_ARRAY_SIZE 100000 // минимальный размер генерируемого вектора
-#define ITER_STEP 20000       // шаг изменения размера вектора
+
+
+struct TestResult {
+
+    TestResult(int threads, double execTime) {
+        threadsNum = threads;
+        executionTime = execTime;    
+    };
+
+    int threadsNum;
+    double executionTime;
+};
+
+void saveTestResultsToFile(list<TestResult> testRestults, string filename) {
+    ofstream file;
+    file.open(filename);
+    for (TestResult res : testRestults) {
+      file << res.threadsNum << " " << res.executionTime<< endl;
+    }
+    file.close();
+}
 
 double f(double x) {
     return (x * x + 2 * x) * sin(2 * x);
 }
-
 
 double integrate(double(*f)(double), double a, double b, int n) {
     double dx = (b - a) / n;
@@ -42,12 +60,25 @@ double parallelizedInregrate(double(*f)(double), double a, double b, int n, int 
     return sum * dx;
 }
 
-
-int main() {
+TestResult test(int threadsNum) {
     double a = 3;
     double b = 8;
     int n = 10;
+
+    double start = omp_get_wtime();
+    double res = parallelizedInregrate(f, a, b, n, threadsNum);
+    double end = omp_get_wtime();
+
+    return TestResult(threadsNum, end - start);
+}
+
+int main() {
     // double res = integrate(f, a, b, n);
-    double res = parallelizedInregrate(f, a, b, n, 10);
-    cout << res << endl;
+    // double res = parallelizedInregrate(f, a, b, n, 10);
+
+    list<TestResult> res;
+    res.push_back(test(MIN_THREADS));
+    res.push_back(test(CORES_NUM));
+    res.push_back(test(MAX_THREADS));
+    saveTestResultsToFile(res, "test_results.txt");
 }
