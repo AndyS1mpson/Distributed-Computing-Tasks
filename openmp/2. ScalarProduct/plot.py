@@ -28,10 +28,10 @@ def read_coords_from_file(filepath: str) -> Tuple[int, float]:
 def plot_thread_test_result() -> None:
     x, y = read_coords_from_file('thread_test.txt')
 
-    plt.axhline(y=30, color='orange',  linestyle = '-', label='Sequential')
+    plt.axhline(y=6060, color='orange',  linestyle = '-', label='Sequential')
 
     plt.plot(x, y, label = "OMP")
-    plt.title("Время выполнения, микросекунды, N = 10000")
+    plt.title("Время выполнения, микросекунды, N = 10^6")
     plt.scatter(x, y, color='blue', marker='o')
     plt.xlabel("Число потоков")
     plt.legend()
