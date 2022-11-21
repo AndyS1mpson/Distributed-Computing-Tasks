@@ -15,7 +15,7 @@ using namespace std;
 #define THREAD_STEP 2          // шаг изменения числа потоков
 #define CORES_NUM 10           // равно числу ядер (Apple M1 Pro)
 
-#define ITERATION_COUNT 10000
+#define ITERATION_COUNT 1000000
 #define CHUNK_SIZE 10000
 
 struct TestResult {
