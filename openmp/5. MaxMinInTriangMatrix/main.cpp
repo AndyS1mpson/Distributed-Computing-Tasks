@@ -1,6 +1,6 @@
 /*
 Задача:
-Реализовать поиск максимального из минимальных элементов строк матрицы.
+Реализовать поиск максимального из минимальных элементов строк треугольной матрицы.
 */
 #include <iostream>
 #include <math.h> 
@@ -12,18 +12,17 @@
 using namespace std;
 using namespace std::chrono;
 
-#define MAX_MATRIX_SIZE 10000 // максимальный размер генерируемого вектора
-#define MIN_MATRIX_SIZE 100   // минимальный размер генерируемого вектора
+#define MAX_MATRIX_SIZE 10000   // максимальный размер генерируемого вектора
+#define MIN_MATRIX_SIZE 100     // минимальный размер генерируемого вектора
 #define ITER_STEP 100           // шаг изменения размера вектора
 #define MAX_RAND_VAL 1000000    // верхняя граница значений матрицы
 
-#define MAX_THREADS 30         // больше числа ядер
-#define MIN_THREADS 4          // меньше числа ядер
-#define THREAD_STEP 2          // шаг изменения числа потоков
+#define MAX_THREADS 30          // больше числа ядер
+#define MIN_THREADS 4           // меньше числа ядер
+#define THREAD_STEP 2           // шаг изменения числа потоков
 #define CORES_NUM 10            // равно числу ядер (Apple M1 Pro)
 
 #define RETRIES 10
-
 
 struct TestResult {
 
@@ -45,6 +44,17 @@ void saveTestResultsToFile(list<TestResult> testRestults, string filename) {
     file.close();
 }
 
+int** generateMatrix(int n, int m) {
+    int** matrix = new int* [n];
+    srand(time(NULL));
+    for (int i = 0; i < n; i++) {
+        matrix[i] = new int[m];
+        for (int j = 0; j <= i; j++){
+            matrix[i][j] = rand() % MAX_RAND_VAL + 1;
+        }
+    };
+    return matrix;
+}
 
 int findMinVectorElement(int* vec, int n)
 {
@@ -56,22 +66,10 @@ int findMinVectorElement(int* vec, int n)
     return min;
 }
 
-int** generateMatrix(int n, int m) {
-    int** matrix = new int* [n];
-    srand(time(NULL));
-    for (int i=0; i<n; i++) {
-        matrix[i] = new int[m];
-        for (int j = 0; j < m; j++){
-            matrix[i][j] = rand() % MAX_RAND_VAL + 1;
-        }
-    };
-    return matrix;
-}
-
 int findMaxMinValue(int** matrix, int n, int m) {
     int maxMin = INT32_MIN;
     for (int i = 0; i < n; i++) {
-        int localMin = findMinVectorElement(matrix[i], m);
+        int localMin = findMinVectorElement(matrix[i], i + 1);
         if (localMin > maxMin) {
             maxMin = localMin;
         }
@@ -83,7 +81,7 @@ int findMaxMinValueOMP(int** matrix, int n, int m, int threadsNum) {
     int maxMin = INT32_MIN;
     #pragma omp parallel for num_threads(threadsNum)
     for (int i = 0; i < n; i++) {
-        int localMin = findMinVectorElement(matrix[i], m);
+        int localMin = findMinVectorElement(matrix[i], i + 1);
         #pragma omp critical
         if (localMin > maxMin) {
             maxMin = localMin;
