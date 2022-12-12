@@ -112,11 +112,17 @@ long testOMP(FILE* file, int numOfVectors, int vecSize) {
 int test(int numvOfVectors, int vecSize) {
     fillFileWithVectors(filename, numvOfVectors, vecSize);
     FILE* file = fopen(filename, "r");
+    auto start = high_resolution_clock::now();
     long seqResult = testSequential(file, numvOfVectors, vecSize);
+    auto end = high_resolution_clock::now();
+    cout << "Sequential algorithm execution time: " << duration_cast<milliseconds>(end - start).count() << endl;
     fclose(file);
 
     file = fopen(filename, "r");
+    double pStart = omp_get_wtime();
     long ompResult = testOMP(file, numvOfVectors, vecSize);
+    double pEnd = omp_get_wtime();
+    cout << "Parallel algorithm execution time: " << (pEnd - pStart) << endl;
     fclose(file);
 
     if(seqResult != ompResult) {
@@ -131,5 +137,5 @@ int test(int numvOfVectors, int vecSize) {
 
 
 int main() {
-    test(20, 10);
+    test(1600, 10);
 }
