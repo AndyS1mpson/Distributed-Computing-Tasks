@@ -125,7 +125,7 @@ list<TestResult> testPerfDependsOnTheNumOfThreadsOMP(int n, int m) {
 list<TestResult> test(int threadsNum) {
     int matrixSize = MIN_MATRIX_SIZE;
     int numOfIters = (MAX_MATRIX_SIZE - MIN_MATRIX_SIZE) / ITER_STEP;     // количество итераций/изменений размера массива
-    list<TestResult> results;                                           // результаты в виде <размер массива, время работы>
+    list<TestResult> results;                                             // результаты в виде <размер массива, время работы>
     for (int i = 0; i <= numOfIters; i++) {
         int** matrix = generateMatrix(matrixSize, matrixSize);
 

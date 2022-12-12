@@ -18,7 +18,7 @@ def read_coords_from_file(filepath: str) -> Tuple[int, float]:
 def plot_thread_test_result() -> None:
     x, y = read_coords_from_file('thread_test.txt')
 
-    plt.axhline(y=1, color='orange',  linestyle = '-', label='Sequential')
+    plt.axhline(y=69, color='orange',  linestyle = '-', label='Sequential')
 
     plt.plot(x, y, label = "OMP")
     plt.title("Время выполнения, милисекунды, N = 100")
