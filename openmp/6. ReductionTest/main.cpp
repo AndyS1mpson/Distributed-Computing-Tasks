@@ -120,10 +120,4 @@ int main()
     saveTestResultsToFile(criticalRes, "critical.txt");
     saveTestResultsToFile(lockRes, "lock.txt");
 
-
-    // printf("Sum = %d; Reduction spent time = %f\n", res1.sum, res1.executionTime);
-    // printf("Sum = %d; Atomic spent time = %f\n", res2.sum, res2.executionTime);
-    // printf("Sum = %d; Critical spent time = %f\n", res3.sum, res3.executionTime);
-    // printf("Sum = %d; Lock spent time = %f\n", res4.sum, res4.executionTime);
-
 }

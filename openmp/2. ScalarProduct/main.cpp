@@ -73,7 +73,7 @@ int dotProductOMP(int* a, int* b, int size, int threadsNum) {
     return result;
 }
 
-long testPerfDependsOnTheNumOfThreads(int vectorSize) {
+long testSeq(int vectorSize) {
     int* a = generateVector(vectorSize);
     int* b = generateVector(vectorSize);
     auto start = high_resolution_clock::now();
@@ -83,7 +83,7 @@ long testPerfDependsOnTheNumOfThreads(int vectorSize) {
 }
 
 
-list<TestResult> testPerfDependsOnTheNumOfThreadsOMP(int vectorSize) {
+list<TestResult> testOMP(int vectorSize) {
     int iters = (MAX_THREADS - MIN_THREADS) / THREAD_STEP;
     int curThreadsNum = MIN_THREADS;
     list<TestResult> results;
@@ -105,37 +105,11 @@ list<TestResult> testPerfDependsOnTheNumOfThreadsOMP(int vectorSize) {
     return results;
 }
 
-list<TestResult> test(int threadsNum) {
-    int curVecSize = MIN_VECTOR_SIZE;
-    int numOfIters = (MAX_VECTOR_SIZE - MIN_VECTOR_SIZE) / ITER_STEP;
-    list<TestResult> results;       // результаты в виде <размер массива, время работы>
-    for (int i = 0; i <= numOfIters; i++) {
-        int* a = generateVector(curVecSize);
-        int* b = generateVector(curVecSize);
-
-        double start = omp_get_wtime();
-        dotProductOMP(a, b, curVecSize, threadsNum);
-        double end = omp_get_wtime();
-
-        results.push_back(TestResult(curVecSize, (end - start)));
-        curVecSize = curVecSize + ITER_STEP;
-    }
-
-    return results;
-}
-
 
 int main(int argc, char *argv[]) {
     // Thread tests
-    cout << "Sequential algorithm time execution: " << testPerfDependsOnTheNumOfThreads(MAX_VECTOR_SIZE) << endl;
-    list<TestResult> tres1 = testPerfDependsOnTheNumOfThreadsOMP(MAX_VECTOR_SIZE);
+    cout << "Sequential algorithm time execution: " << testSeq(MAX_VECTOR_SIZE) << endl;
+    list<TestResult> tres1 = testOMP(MAX_VECTOR_SIZE);
     saveTestResultsToFile(tres1, "thread_test.txt");
-    // list<TestResult> res1 = test(MAX_THREADS);
-    // saveTestResultsToFile(res1, "test_with_15_threads.txt");
 
-    // list<TestResult> res2 = test(MIN_THREADS);
-    // saveTestResultsToFile(res2, "test_with_5_threads.txt");
-  
-    // list<TestResult> res3 = test(CORES_NUM);
-    // saveTestResultsToFile(res3, "test_with_10_threads.txt");
 }

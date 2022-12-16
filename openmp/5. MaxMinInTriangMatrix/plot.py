@@ -15,8 +15,8 @@ def read_coords_from_file(filepath: str) -> Tuple[int, float]:
 
 
 
-def plot_thread_test_result() -> None:
-    x, y = read_coords_from_file('thread_test.txt')
+def plot_thread_test_result(filename: str) -> None:
+    x, y = read_coords_from_file(filename)
 
     plt.axhline(y=69, color='orange',  linestyle = '-', label='Sequential')
 
@@ -28,5 +28,4 @@ def plot_thread_test_result() -> None:
     plt.savefig('thread_test.png')
 
 if __name__ == '__main__':
-    # plot_test_result()
-    plot_thread_test_result()
+    plot_thread_test_result('thread_test.txt')

@@ -91,7 +91,7 @@ int findMaxMinValueOMP(int** matrix, int n, int m, int threadsNum) {
 }
 
 
-long testPerfDependsOnTheNumOfThreads(int n, int m) {
+long testSeq(int n, int m) {
     int** matrix = generateMatrix(n, m);
     auto start = high_resolution_clock::now();
     findMaxMinValue(matrix, n, m);
@@ -100,7 +100,7 @@ long testPerfDependsOnTheNumOfThreads(int n, int m) {
 }
 
 
-list<TestResult> testPerfDependsOnTheNumOfThreadsOMP(int n, int m) {
+list<TestResult> testOMP(int n, int m) {
     int iters = (MAX_THREADS - MIN_THREADS) / THREAD_STEP;
     int curThreadsNum = MIN_THREADS;
     list<TestResult> results;
@@ -122,37 +122,10 @@ list<TestResult> testPerfDependsOnTheNumOfThreadsOMP(int n, int m) {
 }
 
 
-list<TestResult> test(int threadsNum) {
-    int matrixSize = MIN_MATRIX_SIZE;
-    int numOfIters = (MAX_MATRIX_SIZE - MIN_MATRIX_SIZE) / ITER_STEP;     // количество итераций/изменений размера массива
-    list<TestResult> results;                                             // результаты в виде <размер массива, время работы>
-    for (int i = 0; i <= numOfIters; i++) {
-        int** matrix = generateMatrix(matrixSize, matrixSize);
-
-        double start = omp_get_wtime();
-        findMaxMinValueOMP(matrix, matrixSize, matrixSize, threadsNum);
-        double end = omp_get_wtime();
-
-        results.push_back(TestResult(matrixSize, (end - start)));
-        matrixSize = matrixSize + ITER_STEP;
-    }
-
-    return results;
-}
-
 int main()
 {
     // Thread tests
-    cout << "Sequential algorithm time execution: " << testPerfDependsOnTheNumOfThreads(MAX_MATRIX_SIZE, MAX_MATRIX_SIZE) << endl;
-    list<TestResult> tres1 = testPerfDependsOnTheNumOfThreadsOMP(MAX_MATRIX_SIZE, MAX_MATRIX_SIZE);
+    cout << "Sequential algorithm time execution: " << testSeq(MAX_MATRIX_SIZE, MAX_MATRIX_SIZE) << endl;
+    list<TestResult> tres1 = testOMP(MAX_MATRIX_SIZE, MAX_MATRIX_SIZE);
     saveTestResultsToFile(tres1, "thread_test.txt");
-
-    // list<TestResult> res1 = test(MAX_THREADS);
-    // saveTestResultsToFile(res1, "test_with_15_threads.txt");
-
-    // list<TestResult> res2 = test(MIN_THREADS);
-    // saveTestResultsToFile(res2, "test_with_5_threads.txt");
-  
-    // list<TestResult> res3 = test(CORES_NUM);
-    // saveTestResultsToFile(res3, "test_with_10_threads.txt");
 }

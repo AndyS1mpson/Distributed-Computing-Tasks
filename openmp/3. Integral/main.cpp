@@ -64,7 +64,7 @@ double parallelizedInregrate(double(*f)(double), double a, double b, int n, int 
     return sum * dx;
 }
 
-long testPerfDependsOnTheNumOfThreads() {
+long testSeq() {
     double a = 3;
     double b = 8;
     int n = 10;
@@ -75,7 +75,7 @@ long testPerfDependsOnTheNumOfThreads() {
 }
 
 
-list<TestResult> testPerfDependsOnTheNumOfThreadsOMP() {
+list<TestResult> testOMP() {
     int iters = (MAX_THREADS - MIN_THREADS) / THREAD_STEP;
     int curThreadsNum = MIN_THREADS;
     double a = 3;
@@ -99,28 +99,9 @@ list<TestResult> testPerfDependsOnTheNumOfThreadsOMP() {
     return results;
 }
 
-TestResult test(int threadsNum) {
-    double a = 3;
-    double b = 8;
-    int n = 10;
-
-    double start = omp_get_wtime();
-    double res = parallelizedInregrate(f, a, b, n, threadsNum);
-    double end = omp_get_wtime();
-
-    return TestResult(threadsNum, end - start);
-}
 
 int main() {
-    cout << "Sequential algorithm time execution: " << testPerfDependsOnTheNumOfThreads() << endl;
-    list<TestResult> tres1 = testPerfDependsOnTheNumOfThreadsOMP();
+    cout << "Sequential algorithm time execution: " << testSeq() << endl;
+    list<TestResult> tres1 = testOMP();
     saveTestResultsToFile(tres1, "thread_test.txt");
-    // double res = integrate(f, a, b, n);
-    // double res = parallelizedInregrate(f, a, b, n, 10);
-
-    // list<TestResult> res;
-    // res.push_back(test(MIN_THREADS));
-    // res.push_back(test(CORES_NUM));
-    // res.push_back(test(MAX_THREADS));
-    // saveTestResultsToFile(res, "test_results.txt");
 }
