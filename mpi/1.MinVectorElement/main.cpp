@@ -12,7 +12,7 @@ using namespace std;
 using namespace std::chrono;
 
 #define MAX_RAND_VAL 100000   // верхняя граница значений вектора
-#define VECTOR_SIZE 10000     // размер вектора
+#define VECTOR_SIZE 100000000     // размер вектора
 #define ROOT 0                // главный поток
 #define LOCAL_BUF_SIZE 64
 
@@ -50,7 +50,6 @@ int findMinMPI(int* vec, int n) {
         }
     }
     MPI_Gather(&localMin, 1, MPI_INT, resBuf, 1, MPI_INT, 0, MPI_COMM_WORLD);
-    free(recBuf);
 
     if (rank == ROOT) {
         return findMin(resBuf, size);
@@ -90,7 +89,7 @@ int main(int args, char** argv) {
     long seqAlgExecTime = testSEQ(VECTOR_SIZE);
     double mpiAlgExecTime = testMPI(VECTOR_SIZE);
     
-    if(rank == 0) {
+    if(rank == ROOT) {
         cout << "Vector size: " << VECTOR_SIZE << endl;
         cout << "Sequential algorithm execution time: " << seqAlgExecTime << endl;
         cout << "MPI algorithm execution time: " << mpiAlgExecTime * 1000 << endl;

@@ -16,6 +16,7 @@ using namespace std::chrono;
 #define ROOT 0                // главный поток
 #define LOCAL_BUF_SIZE 64
 
+
 int* generateVector(int size) {
     int* vec = new int[size];
     srand(time(NULL));
