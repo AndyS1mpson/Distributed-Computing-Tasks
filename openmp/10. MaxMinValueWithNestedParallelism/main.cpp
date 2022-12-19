@@ -60,7 +60,7 @@ int findMinVectorElement(int* vec, int n)
 
 int findMinVectorElementOMP(int* vec, int n) {
     int min = vec[0];
-    #pragma omp parallel for
+    #pragma omp parallel for reduction(min:min)
     for (int i = 1; i < n; i++) {
         if (min >= vec[i])
             min = vec[i];
@@ -110,9 +110,11 @@ int findMaxMinValueWithNestedParallelism(int** matrix, int n, int m, int threads
     #pragma omp parallel for num_threads(threadsNum)
     for (int i = 0; i < n; i++) {
         int localMin = findMinVectorElementOMP(matrix[i], m);
-        #pragma omp critical
         if (localMin > maxMin) {
-            maxMin = localMin;
+            #pragma omp critical
+            if (localMin > maxMin) {
+                maxMin = localMin;
+            }
         }
     }
     return maxMin;

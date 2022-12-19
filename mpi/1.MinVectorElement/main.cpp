@@ -58,10 +58,10 @@ int findMinMPI(int* vec, int n) {
 
 long testSEQ(int vectorSize) {
     int* vec = generateVector(vectorSize);
-    auto start = high_resolution_clock::now();
+    auto start = MPI_Wtime();
     findMin(vec, vectorSize);
-    auto end = high_resolution_clock::now();
-    return duration_cast<microseconds>(end - start).count();
+    auto end = MPI_Wtime();
+    return end - start;
 }
 
 double testMPI(int vectorSize) {
@@ -92,7 +92,7 @@ int main(int args, char** argv) {
     if(rank == ROOT) {
         cout << "Vector size: " << VECTOR_SIZE << endl;
         cout << "Sequential algorithm execution time: " << seqAlgExecTime << endl;
-        cout << "MPI algorithm execution time: " << mpiAlgExecTime * 1000 << endl;
+        cout << "MPI algorithm execution time: " << mpiAlgExecTime << endl;
     }
     MPI_Finalize();    
     return 0;

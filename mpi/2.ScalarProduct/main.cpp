@@ -64,10 +64,10 @@ int dotProductMPI(int* a, int* b, int n) {
 long testSEQ(int vectorSize) {
     int* a = generateVector(vectorSize);
     int* b = generateVector(vectorSize);
-    auto start = high_resolution_clock::now();
+    auto start = MPI_Wtime();
     dotProduct(a, b, vectorSize);
-    auto end = high_resolution_clock::now();
-    return duration_cast<microseconds>(end - start).count();
+    auto end = MPI_Wtime();
+    return end - start;
 }
 
 
